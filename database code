@@ -1,0 +1,11 @@
+const mongoose = require('mongoose');
+
+const InteractionSchema = new mongoose.Schema({
+    url: String,
+    data: mongoose.Schema.Types.Mixed,
+    timestamp: { type: Date, default: Date.now }
+});
+
+const Interaction = mongoose.model('Interaction', InteractionSchema);
+
+module.exports = Interaction;
