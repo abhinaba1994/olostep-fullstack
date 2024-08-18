@@ -1,0 +1,21 @@
+const puppeteer = require('puppeteer');
+
+(async () => {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.goto('http://example.com');
+    
+    // Perform actions like clicking buttons, filling out forms, etc.
+    await page.click('#some-button');
+    await page.type('#some-input', 'example text');
+    
+    const result = await page.evaluate(() => {
+        return {
+            title: document.title,
+            content: document.body.innerText
+        };
+    });
+
+    console.log(result);
+    await browser.close();
+})();
