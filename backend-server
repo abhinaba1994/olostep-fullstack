@@ -1,0 +1,57 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const puppeteer = require('puppeteer'); // or require('playwright');
+const mongoose = require('mongoose');
+
+const app = express();
+const port = 3000;
+
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost/web_interactions', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+app.use(bodyParser.json());
+app.use(express.static('public'));
+
+// Route to handle URL scraping and interaction
+app.post('/scrape', async (req, res) => {
+    const { url } = req.body;
+
+    if (!url) {
+        return res.status(400).json({ error: 'URL is required' });
+    }
+
+    try {
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.goto(url, { waitUntil: 'networkidle2' });
+
+        // Example of scraping data
+        const data = await page.evaluate(() => {
+            return {
+                title: document.title,
+                content: document.body.innerText
+            };
+        });
+
+        // Example of simulating user interactions (e.g., clicking a button)
+        // await page.click('button.some-class');
+        // await page.type('input[name="some-input"]', 'Sample text');
+
+        // Save data to MongoDB
+        // const Interaction = mongoose.model('Interaction', { url: String, data: Object });
+        // const interaction = new Interaction({ url, data });
+        // await interaction.save();
+
+        await browser.close();
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to scrape and interact with the page' });
+    }
+});
+
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+});
