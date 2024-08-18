@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Interaction Simulator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Web Interaction Simulator</h1>
+    <form id="url-form">
+        <input type="text" id="url-input" placeholder="Enter URL" required>
+        <button type="submit">Scrape and Simulate</button>
+    </form>
+    <div id="result">
+        <h2>Scraped Data</h2>
+        <pre id="data-display"></pre>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
